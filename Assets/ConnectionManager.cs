@@ -18,6 +18,8 @@ public class ConnectionManager : MonoBehaviour
         if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
         {
             ShowStartButtons(true);
+            ipAddress.gameObject.SetActive(true);
+            posChange.gameObject.SetActive(false);
         }
         else
         {
