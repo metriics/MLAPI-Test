@@ -15,12 +15,14 @@ public class ConnectionManager : MonoBehaviour
 
     void Update()
     {
+        // Show the connection dialogue if we aren't yet connected
         if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
         {
             ShowStartButtons(true);
             ipAddress.gameObject.SetActive(true);
             posChange.gameObject.SetActive(false);
         }
+        // If we are connected, show either host or client controls
         else
         {
             ShowStartButtons(false);
