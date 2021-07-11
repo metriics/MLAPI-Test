@@ -1,6 +1,7 @@
 using UnityEngine;
-using MLAPI;
 using System.Text;
+using MLAPI;
+using MLAPI.Transports.UNET;
 
 public class ConnManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class ConnManager : MonoBehaviour
 
     //vars
     private string passphrase;
+    private string ipAddress = "127.0.0.1";
 
     private void Start()
     {
@@ -58,9 +60,14 @@ public class ConnManager : MonoBehaviour
     public void Join()
     {
         connButtonPanel.SetActive(false);
+        //NetworkManager.Singleton.GetComponent<UNetTransport>().ConnectAddress = ipAddress;
         // tell the network manager to connect with custom connection data which we will use as a password
         NetworkManager.Singleton.NetworkConfig.ConnectionData = Encoding.ASCII.GetBytes(passphrase);
         NetworkManager.Singleton.StartClient();
+    }
+
+    public void ipChanged(string newAddress) {
+        ipAddress = newAddress;
     }
     #endregion
 }
