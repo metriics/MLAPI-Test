@@ -9,6 +9,7 @@ public class ConnManager : MonoBehaviour
     [SerializeField] private GameObject connButtonPanel;
 
     //vars
+    private bool serverMode = false;
     private string passphrase;
     private string ipAddress = "127.0.0.1";
 
@@ -16,7 +17,15 @@ public class ConnManager : MonoBehaviour
     {
         connButtonPanel.SetActive(true);
         // TODO: generate random passphrase
-        passphrase = "password";
+        if (passphrase == null)
+        {
+            passphrase = "password";
+        }
+
+        if (serverMode)
+        {
+            StartServer();
+        }
     }
 
     #region ServerMethods
@@ -28,6 +37,23 @@ public class ConnManager : MonoBehaviour
         NetworkManager.Singleton.NetworkConfig.ConnectionData = Encoding.ASCII.GetBytes(passphrase);
         NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
         NetworkManager.Singleton.StartHost(GenerateSpawnLocation(), Quaternion.identity);
+    }
+
+    public void Server()
+    {
+        serverMode = true;
+    }
+
+    private void StartServer()
+    {
+        NetworkManager.Singleton.NetworkConfig.ConnectionData = Encoding.ASCII.GetBytes(passphrase);
+        NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
+        NetworkManager.Singleton.StartServer();
+    }
+
+    public void SetPassphrase(string pass)
+    {
+        passphrase = pass;
     }
 
     private void ApprovalCheck(byte[] connData, ulong clientID, NetworkManager.ConnectionApprovedDelegate callback)
